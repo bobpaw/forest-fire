@@ -1,0 +1,31 @@
+.forest {
+  background-color: "white";
+  display: inline-flex;
+  flex-direction: column;
+  border-left: 1px solid gray;
+  border-top: 1px solid gray;
+  margin: auto;
+}
+
+body {
+  margin: 0;
+  display: flex;
+}
+
+.forest__row {
+  display: flex;
+  flex-direction: row;
+}
+
+.forest__row__cell {
+  box-sizing: content-box;
+  border: 1px solid gray;
+  border-top: none;
+  border-left: none;
+  width: 16px;
+  height: 20px;
+  padding: 0px;
+  font-size: 16px;
+  text-align: center;
+  display: block;
+}
