@@ -1,16 +1,4 @@
-function getID (id, width) {
-	if (typeof id === "number") {
-		return id;
-	} else if (typeof id === "object" &&
-	"x" in id && typeof id.x === "number" &&
-	"y" in id && typeof id.y === "number") {
-		if (typeof width !== "number")
-			throw new TypeError("width must be a number.");
-		return width * id.y + id.x;
-	} else {
-		throw new TypeError("id must be a number or { x, y } object.");
-	}
-}
+import { tileText } from "./tiles.js";
 
 export class View {
 	constructor (width, height) {
@@ -34,14 +22,12 @@ export class View {
 
 	set (ids, value) {
 		if (!Array.isArray(ids)) ids = [ids];
-		const texts = { tree: "T", null: "", fire: "F" }, text = texts[value];
 
-		if (text === undefined)
-			throw new TypeError(`value must be one of ${text.keys()}`);
+		if (tileText(value) === undefined)
+			throw new TypeError("value must be a TreEnum");
 
-		ids = ids.map(x => getID(x, this.width));
 		this.table.find(".forest__row__cell").filter((_, x) =>
-			ids.includes($(x).data("id"))).text(text);
+			ids.includes($(x).data("id"))).text(tileText(value));
 	}
 
 	clear () {
