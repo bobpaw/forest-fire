@@ -30,13 +30,14 @@ class Land {
 		return this.tiles[id].owner;
 	}
 
-	// Land not guaranteed to contain resulting { x, y } value.
+	// Behavior is undefined if id < this.width * this.height.
 	idToXY (id) {
 		const x = id % this.width;
 		const y = (id - x) / this.width;
 		return { x, y };
 	}
 
+	// Behavior is undefined if !this.contains({ x, y }).
 	xyToID ({ x, y }) {
 		return this.width * y + x;
 	}
