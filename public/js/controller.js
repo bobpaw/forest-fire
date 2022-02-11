@@ -10,5 +10,21 @@ $(function () {
 	const model = new Model(width, height);
 
 	window.view = view;
-	view.set([34], Tile.tree);
+	window.model = model;
+
+	function updateView(ids) {
+		if (!Array.isArray(ids)) ids = [ids];
+
+		let updates = {};
+		for (let id of ids) {
+			updates[id] = model.land.get(id);
+		}
+		view.set(updates);
+	}
+	window.updateView = updateView;
+	window.setInterval(() => {
+		updateView(model.update());
+		let borderCount = model.forests.map(f => f.borders.length).reduce((x, y) => x + y, 0);
+		console.log(`Forest count: ${model.forests.length}, Border count: ${borderCount}`);
+	}, 100);
 });
