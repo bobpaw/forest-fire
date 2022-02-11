@@ -1,6 +1,13 @@
 import { Tile } from "./tiles.js";
 
+/** Class maintaining land tile data. */
 class Land {
+	/**
+	 * Create a parcel of land.
+	 *
+	 * @param {number} width A natural number.
+	 * @param {number} height A natural number.
+	 */
 	constructor (width, height) {
 		this.width = width;
 		this.height = height;
@@ -13,6 +20,10 @@ class Land {
 			};
 	}
 
+	/**
+	 * @param {number} id An index in this.tiles.
+	 * @returns {Tile} The value of that tile.
+	 */
 	get (id) {
 		return this.tiles[id].value;
 	}

@@ -127,7 +127,7 @@ class Model {
 	
 
 	/**
-	 * @returns An array of cell ids and new values.
+	 * @returns {Array} An array of ids of updated tiles.
 	 */
 	update () {
 		const updates = [];

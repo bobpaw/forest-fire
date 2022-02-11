@@ -6,6 +6,7 @@
 
 /**
  * Tile values enum.
+ * 
  * @readonly
  * @enum {number}
  */
@@ -16,9 +17,8 @@ const Tile = {
 };
 
 /**
- * Returns the textual output for a Tile.
- * @param {Tile} tile 
- * @returns {string}
+ * @param {Tile} tile The tile value.
+ * @returns {string} Corresponding textual output.
  */
 function tileText (tile) {
 	switch (tile) {

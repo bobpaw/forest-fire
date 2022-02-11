@@ -1,7 +1,9 @@
-.vscode/
+*~
 
 node_modules/
 
-*~
+.vscode/
 
 coverage/
+doc/
+.eslintcache

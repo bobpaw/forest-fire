@@ -88,6 +88,20 @@
 			],
 			"env": {
 				"jquery": true
+			},
+			"plugins": ["jsdoc"],
+			"extends": ["plugin:jsdoc/recommended"],
+			"rules": {
+				"jsdoc/require-jsdoc": [
+					"warn",
+					{
+						"require": {
+							"ClassExpression": true,
+							"ClassDeclaration": true,
+							"MethodDefinition": true
+						}
+					}
+				]
 			}
 		}
 	]
