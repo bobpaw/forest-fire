@@ -20,14 +20,21 @@ export class View {
 		this.table = $("body").append(table);
 	}
 
-	set (ids, value) {
+	// map {id: value} objects.
+	set (map) {
+		this.table.find(".forest__row__cell").each((_, x) => {
+			let id = $(x).data("id");
+			if (id in map) {
+				if (tileText(map[id]) === undefined)
+					throw new TypeError("value must be a Tile.");
+				$(x).text(tileText(map[id]));
+			}
+		});
+	}
+
+	get (ids) {
 		if (!Array.isArray(ids)) ids = [ids];
-
-		if (tileText(value) === undefined)
-			throw new TypeError("value must be a TreEnum");
-
-		this.table.find(".forest__row__cell").filter((_, x) =>
-			ids.includes($(x).data("id"))).text(tileText(value));
+		return this.table.find(".forest__row__cell").filter((i, x) => ids.includes($(x).data("id")));
 	}
 
 	clear () {
