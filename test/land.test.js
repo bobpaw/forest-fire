@@ -34,6 +34,15 @@ describe("Land", function () {
 		expect(land.owner(9)).to.equal(3);
 		expect(land.owner(10)).to.equal(-1);
 	});
+
+	it("sets a null owner for Tile.null.", function () {
+		land.own(0, 2);
+		expect(land.owner(0)).to.equal(2);
+		land.set(0, Tile.null);
+		expect(land.get(0)).to.equal(Tile.null);
+		expect(land.owner(0)).to.equal(-1);
+	});
+
 	describe("idToXY()", function () {
 		it("Returns valid results.", function () {
 			expect(land.idToXY(0)).to.deep.equal({ x: 0, y: 0 });
@@ -65,6 +74,7 @@ describe("Land", function () {
 			expect(land.contains({ x: -2, y: 6 })).to.not.be.ok;
 			expect(land.contains({ x: 4, y: 1290 })).to.not.be.ok;
 			expect(land.contains({ x: 4, y: -3 })).to.not.be.ok;
+			expect(land.contains({ x: 10, y: 4 })).to.not.be.ok;
 		});
 		it("should return false for wrongly-typed xys.", function () {
 			expect(land.contains({ x: 5.6, y: 8 })).to.not.be.ok;
@@ -72,18 +82,79 @@ describe("Land", function () {
 		});
 	});
 	describe("around()", function () {
-		it("should return the right 8 ids.");
-		it("should return only 5 valid ids at a wall.");
-		it("should return only 3 valid ids at a corner.");
+		it("should return the right 8 ids.", function () {
+			expect(land.around(45)).to.be.an("array")
+				.with.members([34, 35, 36, 44, 46, 53, 54, 55]);
+			expect(land.around(18)).to.be.an("array")
+				.with.members([7, 8, 9, 17, 19, 27, 28, 29]);
+		});
+		it("should return only 5 valid ids at a wall.", function () {
+			expect(land.around(40)).to.be.an("array")
+				.with.members([30, 31, 41, 50, 51]);
+			expect(land.around(7)).to.be.an("array")
+				.with.members([6, 8, 16, 57, 18]);
+			expect(land.around(49)).to.be.an("array")
+				.with.members([38, 39, 48, 58, 59]);
+			expect(land.around(94)).to.be.an("array")
+				.with.members([83, 84, 85, 93, 95]);
+		});
+		it("should return only 3 valid ids at a corner.", function () {
+			expect(land.around(0)).to.be.an("array")
+				.with.members([1, 10, 11]);
+			expect(land.around(9)).to.be.an("array")
+				.with.members([8, 18, 19]);
+			expect(land.around(90)).to.be.an("array")
+				.with.members([80, 81, 91]);
+			expect(land.around(99)).to.be.an("array")
+				.with.members([88, 89, 98]);
+		});
 	});
 	describe("aroundCardinal()", function () {
-		it("should return the right 4 ids.");
-		it("should return only 3 valid ids at a wall.");
-		it("should return only 2 valid ids at a corner.");
+		it("should return the right 4 ids.", function () {
+			expect(land.aroundCardinal(41)).to.be.an("array")
+				.with.members([31, 40, 42, 51]);
+			expect(land.aroundCardinal(58)).to.be.an("array")
+				.with.members([48, 57, 59, 68]);
+		});
+		it("should return only 3 valid ids at a wall.", function () {
+			expect(land.aroundCardinal(3), "Upper edge.").to.be.an("array")
+				.with.members([2, 4, 13]);
+			expect(land.aroundCardinal(30), "Left edge.").to.be.an("array")
+				.with.members([20, 31, 40]);
+			expect(land.aroundCardinal(79), "Right edge.").to.be.an("array")
+				.with.members([69, 78, 89]);
+			expect(land.aroundCardinal(91), "Lower edge").to.be.an("array")
+				.with.members([81, 90, 92]);
+		});
+		it("should return only 2 valid ids at a corner.", function () {
+			expect(land.aroundCardinal(0), "Upper left.").to.be.an("array")
+				.with.members([1, 10]);
+			expect(land.aroundCardinal(9), "Upper right.").to.be.an("array")
+				.with.members([8, 19]);
+			expect(land.aroundCardinal(90), "Lower left.").to.be.an("array")
+				.with.members([80, 91]);
+			expect(land.around(99), "Lower right.").to.be.an("array")
+				.with.members([89, 98]);
+		});
 	});
 	describe("neightbors()", function () {
-		it("should return true for neightbors.");
-		it("should return false for corners.");
-		it("should return false for non-neighbors.");
+		it("should return true for neightbors.", function () {
+			expect(land.neighbors(22, 23), "Right.").to.be.true;
+			expect(land.neighbors(74, 64), "Up.").to.be.true;
+			expect(land.neighbors(49, 59), "Down.").to.be.true;
+			expect(land.neighbors(86, 85), "Left.").to.be.true;
+		});
+		it("should return false for non-neighbors.", function () {
+			expect(land.neighbors(22, 48)).to.be.false;
+			expect(land.neighbors(74, 34)).to.be.false;
+			expect(land.neighbors(49, 39)).to.be.false;
+			expect(land.neighbors(86, 88)).to.be.false;
+		});
+		it("should return false for corners.", function () {
+			expect(land.neighbors(22, 11), "Upper left.").to.be.false;
+			expect(land.neighbors(74, 65), "Upper right.").to.be.false;
+			expect(land.neighbors(49, 58), "Lower left.").to.be.false;
+			expect(land.neighbors(86, 97), "lower right.").to.be.false;
+		});
 	});
 });
