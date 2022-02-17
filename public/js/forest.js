@@ -4,7 +4,14 @@
  * @license MIT
  */
 
+/** Class maintaining ownership of Tiles. */
 class Forest {
+	/**
+	 * Creates a new Forest.
+	 * 
+	 * @param {Land} land Land this Forest exists on.
+	 * @param {number} id The first id to add.
+	 */
 	constructor (land, id) {
 		this.land = land;
 
@@ -13,7 +20,11 @@ class Forest {
 		this.borders = this.land.aroundCardinal(id);
 	}
 
-	// Returns list of ids to claim.
+	/**
+	 * Select some borders to grow into.
+	 * 
+	 * @returns {number[]} A list of ids to request to add.
+	 */
 	grow () {
 		let borders = this.borders.filter(() => {
 			return Math.random() * 100 < 20;
@@ -22,7 +33,14 @@ class Forest {
 		return borders;
 	}
 
-	// Returns a single merged forest. Clears this and otherForest.
+	/**
+	 * Merges this forest with another, claiming its ids.
+	 * Also figure out the new borders.
+	 * 
+	 * Borders and ids in otherForest are cleared.
+	 * 
+	 * @param {Forest} otherForest The forest to absorb.
+	 */
 	merge (otherForest) {
 		this.ids.push(...otherForest.ids);
 		otherForest.ids = [];
@@ -35,7 +53,15 @@ class Forest {
 		this.borders = this.borders.filter(x => this.contains(x));
 	}
 
-	// strict i.e. true = all, false = any.
+	/**
+	 * Check if this Forest has ids in this.ids.
+	 * If strict is true, checks for all ids.
+	 * If strict is false, checks for any ids.
+	 * 
+	 * @param {*} ids The id or ids to test
+	 * @param {boolean} strict A switch changing behavior.
+	 * @returns {boolean} Whether this.ids has ids.
+	 */
 	contains (ids, strict) {
 		if (!Array.isArray(ids)) ids = [ids];
 
@@ -56,6 +82,11 @@ class Forest {
 	// Unclaim an id.
 	remove (id) {}
 
+	/**
+	 * Adds ids to this.ids and updates this.borders.
+	 * 
+	 * @param {number[]} ids IDs to add.
+	 */
 	claim (ids) {
 		this.ids.push(...ids);
 		this.ids.sort((x, y) => x < y ? -1 : (x === y ? 0 : 1));
