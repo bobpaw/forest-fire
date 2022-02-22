@@ -58,7 +58,7 @@ class Forest {
 	 * If strict is true, checks for all ids.
 	 * If strict is false, checks for any ids.
 	 * 
-	 * @param {*} ids The id or ids to test
+	 * @param {number|number[]} ids The id or ids to test
 	 * @param {boolean} strict A switch changing behavior.
 	 * @returns {boolean} Whether this.ids has ids.
 	 */
@@ -85,7 +85,7 @@ class Forest {
 	/**
 	 * Adds ids to this.ids and updates this.borders.
 	 * 
-	 * @param {number[]} ids IDs to add.
+	 * @param {number|number[]} ids IDs to add.
 	 */
 	claim (ids) {
 		this.ids.push(...ids);
