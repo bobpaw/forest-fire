@@ -21,6 +21,25 @@ class Forest {
 	}
 
 	/**
+	 * Adds ids to this.ids and updates this.borders.
+	 * 
+	 * @param {number|number[]} ids IDs to add.
+	 */
+	claim (ids) {
+		this.ids.push(...ids);
+		this.ids.sort((x, y) => x < y ? -1 : (x === y ? 0 : 1));
+
+		this.borders = this.borders.filter(id => !ids.includes(id));
+
+		let borders = ids.flatMap(id => this.land.aroundCardinal(id)).filter(id => !this.contains(id));
+
+		this.borders.push(...borders);
+	}
+
+	// Unclaim an id.
+	remove (id) {}
+
+	/**
 	 * Select some borders to grow into.
 	 * 
 	 * @returns {number[]} A list of ids to request to add.
@@ -31,26 +50,6 @@ class Forest {
 		});
 
 		return borders;
-	}
-
-	/**
-	 * Merges this forest with another, claiming its ids.
-	 * Also figure out the new borders.
-	 * 
-	 * Borders and ids in otherForest are cleared.
-	 * 
-	 * @param {Forest} otherForest The forest to absorb.
-	 */
-	merge (otherForest) {
-		this.ids.push(...otherForest.ids);
-		otherForest.ids = [];
-
-		this.ids.sort((x, y) => x < y ? -1 : (x === y ? 0 : 1));
-
-		this.borders.push(...otherForest.borders);
-		otherForest.borders = [];
-
-		this.borders = this.borders.filter(x => this.contains(x));
 	}
 
 	/**
@@ -79,23 +78,24 @@ class Forest {
 		return !stop;
 	}
 
-	// Unclaim an id.
-	remove (id) {}
-
 	/**
-	 * Adds ids to this.ids and updates this.borders.
+	 * Merges this forest with another, claiming its ids.
+	 * Also figure out the new borders.
 	 * 
-	 * @param {number|number[]} ids IDs to add.
+	 * Borders and ids in otherForest are cleared.
+	 * 
+	 * @param {Forest} otherForest The forest to absorb.
 	 */
-	claim (ids) {
-		this.ids.push(...ids);
+	merge (otherForest) {
+		this.ids.push(...otherForest.ids);
+		otherForest.ids = [];
+
 		this.ids.sort((x, y) => x < y ? -1 : (x === y ? 0 : 1));
 
-		this.borders = this.borders.filter(id => !ids.includes(id));
+		this.borders.push(...otherForest.borders);
+		otherForest.borders = [];
 
-		let borders = ids.flatMap(id => this.land.aroundCardinal(id)).filter(id => !this.contains(id));
-
-		this.borders.push(...borders);
+		this.borders = this.borders.filter(x => this.contains(x));
 	}
 }
 
