@@ -110,7 +110,15 @@ describe("Forest", function () {
 				[12, 21, 22, 13, 1, 10, 46, 45, 35, 25, 24, 36, 44, 15, 14]
 			);
 		});
-		it("Moves otherForest.borders other this.borders.");
+		it("Moves otherForest.borders to this.borders.", function () {
+			forest1.merge(forest2);
+			
+			expect(forest2.borders).to.have.length(0);
+			expect(forest1.borders).to.have.members(
+				[0,  2,  3,  4,  5, 11, 16, 20, 23, 26, 31,
+					32, 34, 36, 37, 43, 47, 54, 55, 56]
+			);
+		});
 		it("Removes duplicate borders.");
 		it("Removes borders which were in otherForests.ids.");
 	});
